@@ -7,6 +7,25 @@
   pointer-events: none;
 }
 
+.puppies{
+  display: flex;
+  justify-content: space-around;
+  background-image: url('/public/home_dogs.jpg');
+  background-position:top;
+  background-size: contain;
+  height: 100vh;
+  width: '100%';
+  background-repeat: no-repeat;
+  margin: 20px;
+  border-radius: 20px;
+  }
+
+  .dogGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -14,11 +33,11 @@
 }
 
 .App-header {
-  background-color: #545f75;
-  min-height: 100vh;
+  background-color: #ecf2fd;
+  max-height: 120vh;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-evenly;
   color: white;
 }
