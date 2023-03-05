@@ -1,34 +1,37 @@
-import { Button, Typography, Grid } from '@mui/material';
+import {  Typography, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import '../App.css';
 import ComboBox from '../components/ComboBox';
 import DogCard from '../components/DogCard';
+import DogModal from '../components/DogModal';
 import { APIURI } from '../config/enviroment';
 import { useFetch } from '../hooks/useFetch';
 
 const Home = () => {
 
   const [subBreedSelected, setSubBreedSelected] = useState('');
-  const { data, loading, error } = useFetch(`${APIURI}/breeds/list/all`);
-  const { data: data2, loading: loading2, error: error2 } = useFetch(`${APIURI}/breed/${subBreedSelected}/images`);
+  const { data, loading } = useFetch(`${APIURI}/breeds/list/all`);
+  const { data: data2, loading: loading2, } = useFetch(`${APIURI}/breed/${subBreedSelected}/images`);
   const [Breeds, setBreeds] = useState([]);
   const [SubBreeds, setSubBreeds] = useState([]);
   const [images, setImages] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedDog, setSelectedDog] = useState('');
 
   useEffect(() => {
     if (data) {
       let temp = [];
-      Object.keys(data.message).map((d, i) => {
+      Object.keys(data.message).forEach((d, i) => {
         temp.push({ 'label': d, 'id': i, 'subbreed': data.message[d] });
       });
       setBreeds(temp);
     }
-  }, [loading]);
+  }, [data]);
 
   useEffect(() => {
     if (subBreedSelected.length > 0) {
       let temp = [];
-      data2.message.map((info) => {
+      data2.message.forEach((info) => {
         temp.push({ 'imageUri': info, show: true });
       });
       setImages(temp);
@@ -51,7 +54,7 @@ const Home = () => {
 
   const imageFilterHandler = (val) => {
     let temp = [...images];
-    temp.map((image) => {
+    temp.forEach((image) => {
       //Every image diferent from the selected breed won't be shown
       if (!image.imageUri.includes(val)) {
         image.show = false;
@@ -64,13 +67,18 @@ const Home = () => {
     setImages(temp);
   }
 
+  const modalHandler = (uri) => {
+    setSelectedDog(uri);
+    setOpenModal(true)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <Typography variant='h3' color={'#FFFF'}>Find your new best friend</Typography>
-        <Button variant='contained'>Want to help us?</Button>
-      </header>
       <div className='puppies'>
+        <Typography variant='h3' color={'#FFFF'} sx={{ textShadow: '1px 0 black, 0 1px black, 1px 0 black, 0 -1px black' }}>Find your new best friend</Typography>
+      </div>
+
+      <div className='comboBox'>
         <ComboBox
           Label='Dog breed'
           ListOfItems={Breeds}
@@ -87,25 +95,35 @@ const Home = () => {
         }
       </div>
 
+
       <header className="App-header">
         {subBreedSelected != null ? <Typography variant='h3' color={'#FFFF'}>{subBreedSelected.toUpperCase()}</Typography> : null}
       </header>
       <div>
-        <Grid container spacing={2} sx={{margin:'20px'}}>
+        <Grid container spacing={2} alignItems={'center'} sx={{ marginTop: '20px',  justifyContent:'center', }}>
           {images.map((image, index) => {
             if (image.show)
               return (
                 <DogCard
+                  key={index}
                   ImageUri={image.imageUri}
-                  index={index}
+                  ModalHandler={modalHandler}
                 />
               )
-
           })}
         </Grid>
       </div>
 
-
+      {selectedDog.length > 0
+        ?
+        <DogModal
+          ImageUri={selectedDog}
+          Open={openModal}
+          Close={() => setOpenModal(false)}
+        />
+        :
+        null
+      }
     </div>
   )
 }

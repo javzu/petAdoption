@@ -6,24 +6,28 @@ export function useFetch(url) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        let isMounted = true;
         async function fetchData() {
             try {
                 const response = await fetch(url);
                 if (response.status !== 200) {
                     throw new Error('Error en la respuesta');
-                  }
-                  console.log('sigo con el estado ',response.status)
+                }
                 const jsonData = await response.json();
-                setData(jsonData);
-                setLoading(false);
+                if (isMounted) {
+                    setData(jsonData);
+                    setLoading(false);
+                }
+
             }
             catch (e) {
                 setError(e);
             }
         }
         fetchData();
+        return ()=>isMounted=false;
     }, [url]);
 
-    return {data,loading, error}
+    return { data, loading, error }
 
 }

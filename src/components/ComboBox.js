@@ -13,7 +13,7 @@ const ComboBox = ({
             options={ListOfItems}
             renderInput={(p)=><div><TextField {...p} label={Label}/>{Loading && <CircularProgress/>}</div>}
             onChange={OnChangeHandler}
-            style={{backgroundColor:'#FFFF', padding:'5px', borderRadius:'5px',}}
+            style={{backgroundColor:'#FFFF', padding:'10px', borderRadius:'5px',}}
             />
         </div>
     )

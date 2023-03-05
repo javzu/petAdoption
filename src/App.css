@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin:20px
 }
 
 .App-logo {
@@ -12,12 +13,19 @@
   justify-content: space-around;
   background-image: url('/public/home_dogs.jpg');
   background-position:top;
-  background-size: contain;
-  height: 100vh;
+  background-size: cover;
+  height: 40vh;
   width: '100%';
   background-repeat: no-repeat;
-  margin: 20px;
   border-radius: 20px;
+  background-color: #0f667e;
+  padding: 20px;
+  }
+
+  .comboBox{
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
   }
 
   .dogGrid {
@@ -26,14 +34,9 @@
     grid-gap: 20px;
   }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 .App-header {
-  background-color: #ecf2fd;
+  background-color: #259c9c;
   max-height: 120vh;
   display: flex;
   flex-direction: row;
@@ -46,11 +49,3 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
